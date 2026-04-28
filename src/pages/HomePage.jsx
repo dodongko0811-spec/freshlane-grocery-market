@@ -37,7 +37,20 @@ const serviceCards = [
 
 export function HomePage() {
   const { visibleProducts, addToCart } = useStore()
-  const featured = visibleProducts.slice(0, 6)
+  const sortedVisible = [...visibleProducts].toSorted((a, b) => b.rating - a.rating || a.price - b.price)
+  const featured = sortedVisible.slice(0, 6)
+  const newThisWeek = sortedVisible
+    .filter((product) => (product.groups || []).includes('seasonal'))
+    .slice(0, 4)
+  const freshShelf = sortedVisible
+    .filter((product) => (product.groups || []).includes('perishable'))
+    .slice(0, 6)
+  const pantryShelf = sortedVisible
+    .filter((product) => (product.groups || []).includes('non-perishable'))
+    .slice(0, 6)
+  const promoShelf = sortedVisible
+    .filter((product) => (product.groups || []).includes('promo'))
+    .slice(0, 3)
   const departments = STORE_CATEGORIES.filter((item) => item.id !== 'all').map((item) => ({
     ...item,
     count: visibleProducts.filter((product) => product.category === item.id).length,
@@ -138,12 +151,38 @@ export function HomePage() {
 
       <section className="panel section-block">
         <SectionTitle
-          eyebrow="Featured shelf"
-          title="Best sellers that keep the shelf feeling real."
-          text="Staples like rice, coffee, and household goods sit beside seasonal picks and the live grocery feed."
+          eyebrow="New this week"
+          title="Seasonal picks and fresh arrivals."
+          text="Small runs of holiday snacks, summer drinks, and week-of arrivals keep the store feeling current."
         />
         <div className="product-grid product-grid--featured">
-          {featured.map((product) => (
+          {(newThisWeek.length > 0 ? newThisWeek : featured).map((product) => (
+            <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
+          ))}
+        </div>
+      </section>
+
+      <section className="panel section-block">
+        <SectionTitle
+          eyebrow="Fresh market"
+          title="Produce, dairy, bakery, and frozen shelves."
+          text="This section stays on the perishable side of the store: quick-rotate items that belong in the front half of a market run."
+        />
+        <div className="product-grid product-grid--featured">
+          {freshShelf.map((product) => (
+            <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
+          ))}
+        </div>
+      </section>
+
+      <section className="panel section-block">
+        <SectionTitle
+          eyebrow="Pantry staples"
+          title="Cans, sauces, rice, drinks, and shelf-stable essentials."
+          text="The pantry side keeps the store grounded with the things people come back for every week."
+        />
+        <div className="product-grid product-grid--featured">
+          {pantryShelf.map((product) => (
             <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
           ))}
         </div>
@@ -152,9 +191,9 @@ export function HomePage() {
       <section className="panel section-block split-banner">
         <div className="banner-copy">
           <SectionTitle
-            eyebrow="Weekly deal"
-            title="Stock the pantry without overthinking it."
-            text="The layout keeps one strong promotion in view while the rest of the store stays accessible."
+            eyebrow="Sale corner"
+            title="A visible promo rail for marked-down items."
+            text="Promo items show their own On Sale badge, so the discount shelf feels like a real supermarket endcap."
           />
           <div className="hero-actions">
             <NavLink to="/store" className="button button-primary">
@@ -163,8 +202,18 @@ export function HomePage() {
           </div>
         </div>
         <div className="banner-grid">
-          {visibleProducts.slice(3, 6).map((product) => (
+          {(promoShelf.length > 0 ? promoShelf : featured.slice(3, 6)).map((product) => (
             <button key={product.id} type="button" className="banner-product" onClick={() => addToCart(product.id)}>
+              {(product.groups || []).includes('promo') || (product.groups || []).includes('seasonal') ? (
+                <div className="product-badges">
+                  {(product.groups || []).includes('promo') ? (
+                    <span className="product-badge badge--sale">On Sale</span>
+                  ) : null}
+                  {(product.groups || []).includes('seasonal') ? (
+                    <span className="product-badge badge--new">New This Week</span>
+                  ) : null}
+                </div>
+              ) : null}
               <img src={product.image} alt={product.title} loading="lazy" />
               <div>
                 <strong>{product.title}</strong>

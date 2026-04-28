@@ -12,9 +12,23 @@ export function ProductCard({
   showActions = true,
   actionLabel = 'Add to cart',
 }) {
+  const groups = product.groups || []
+  const badges = []
+  if (groups.includes('promo')) badges.push({ label: 'On Sale', className: 'badge--sale' })
+  if (groups.includes('seasonal')) badges.push({ label: 'New This Week', className: 'badge--new' })
+
   return (
     <article className={`product-card${hidden ? ' is-hidden' : ''}`}>
       <div className="product-media">
+        {badges.length > 0 ? (
+          <div className="product-badges">
+            {badges.map((badge) => (
+              <span key={badge.label} className={`product-badge ${badge.className}`}>
+                {badge.label}
+              </span>
+            ))}
+          </div>
+        ) : null}
         <img
           src={product.image || placeholderImage}
           alt={product.title}
