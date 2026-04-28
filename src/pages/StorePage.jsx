@@ -2,7 +2,7 @@ import { useDeferredValue, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ProductCard } from '../components/ProductCard.jsx'
 import { SectionTitle } from '../components/SectionTitle.jsx'
-import { SORT_OPTIONS, STORE_CATEGORIES } from '../store/storeUtils.js'
+import { SORT_OPTIONS, STORE_CATEGORIES, STORE_GROUPS } from '../store/storeUtils.js'
 import { useStore } from '../store/storeContext.js'
 
 export function StorePage() {
@@ -10,6 +10,7 @@ export function StorePage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const query = searchParams.get('q') ?? ''
   const category = searchParams.get('category') ?? 'all'
+  const group = searchParams.get('group') ?? 'all'
   const [sortBy, setSortBy] = useState('featured')
   const deferredQuery = useDeferredValue(query)
 
@@ -20,7 +21,8 @@ export function StorePage() {
         !q ||
         `${product.title} ${product.brand} ${product.description}`.toLowerCase().includes(q)
       const matchesCategory = category === 'all' || product.category === category
-      return matchesQuery && matchesCategory
+      const matchesGroup = group === 'all' || (product.groups || []).includes(group)
+      return matchesQuery && matchesCategory && matchesGroup
     })
 
     return items.toSorted((a, b) => {
@@ -29,11 +31,17 @@ export function StorePage() {
       if (sortBy === 'rating-desc') return b.rating - a.rating
       return b.rating - a.rating
     })
-  }, [category, deferredQuery, sortBy, visibleProducts])
+  }, [category, deferredQuery, group, sortBy, visibleProducts])
 
   function updateCategory(nextCategory) {
     const next = new URLSearchParams(searchParams)
     next.set('category', nextCategory)
+    setSearchParams(next)
+  }
+
+  function updateGroup(nextGroup) {
+    const next = new URLSearchParams(searchParams)
+    next.set('group', nextGroup)
     setSearchParams(next)
   }
 
@@ -88,6 +96,22 @@ export function StorePage() {
                     type="button"
                     className={`chip${category === item.id ? ' is-active' : ''}`}
                     onClick={() => updateCategory(item.id)}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="rail-divider" />
+
+              <p className="rail-label">Shelf type</p>
+              <div className="chip-grid">
+                {STORE_GROUPS.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={`chip${group === item.id ? ' is-active' : ''}`}
+                    onClick={() => updateGroup(item.id)}
                   >
                     {item.label}
                   </button>

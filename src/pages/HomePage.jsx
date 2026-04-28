@@ -11,12 +11,12 @@ const promoCopy = [
     text: 'Use this page like a store flyer: a quick scan, a few good finds, then move on.',
   },
   {
-    title: 'Bundle & Save',
-    text: 'Mix everyday essentials with custom stock items and keep the shelf from feeling empty.',
+    title: 'Promo Aisle',
+    text: 'Seasonal cookies, rice packs, and cleaning staples keep the discount shelf active.',
   },
   {
-    title: 'Market Deals',
-    text: 'The cart updates live, so the page behaves more like a real shop counter than a demo.',
+    title: 'Shelf Types',
+    text: 'Perishable and non-perishable grouping helps the catalog feel more like a real store floor.',
   },
 ]
 
@@ -85,7 +85,7 @@ export function HomePage() {
           <article className="promo-feature">
             <div className="promo-feature__header">
               <span>Featured this week</span>
-              <strong>Rice, drinks, canned fish, bakery, and pantry staples</strong>
+              <strong>Rice, drinks, canned fish, bakery, seasonal items, and pantry staples</strong>
             </div>
             <div className="promo-feature__stack">
               {featured.slice(0, 3).map((product) => (
@@ -140,7 +140,7 @@ export function HomePage() {
         <SectionTitle
           eyebrow="Featured shelf"
           title="Best sellers that keep the shelf feeling real."
-          text="Staples like rice, coffee, and household goods sit beside the live grocery feed."
+          text="Staples like rice, coffee, and household goods sit beside seasonal picks and the live grocery feed."
         />
         <div className="product-grid product-grid--featured">
           {featured.map((product) => (

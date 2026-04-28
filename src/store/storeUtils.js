@@ -29,6 +29,14 @@ export const STORE_CATEGORIES = [
   { id: 'custom', label: 'Custom Items' },
 ]
 
+export const STORE_GROUPS = [
+  { id: 'all', label: 'All shelves' },
+  { id: 'seasonal', label: 'Seasonal' },
+  { id: 'promo', label: 'Promo Deals' },
+  { id: 'perishable', label: 'Perishable' },
+  { id: 'non-perishable', label: 'Non-Perishable' },
+]
+
 export const SORT_OPTIONS = [
   { id: 'featured', label: 'Featured' },
   { id: 'price-asc', label: 'Price: Low to High' },
@@ -79,24 +87,31 @@ export function createId(prefix) {
 }
 
 const riceKeywords = /rice|grain|quinoa|barley/
-const beverageKeywords = /coffee|tea|juice|water|soda|drink|latte|espresso|brew|soft drink|sparkling|beverage/
-const bakeryKeywords = /bread|bun|roll|croissant|muffin|bagel|scone|pastry|danish|cake|loaf|bakery/
-const breakfastKeywords = /oatmeal|oats|cereal|granola|pancake|waffle|breakfast/
-const cannedFishKeywords = /canned tuna|tuna|sardine|sardines|fish can|canned fish/
-const cannedGoodsKeywords = /canned|beans|corn|peas|tomato paste/
-const condimentsKeywords = /sauce|ketchup|mayo|mayonnaise|vinegar|spread|jam|honey|seasoning|dip|marinade|oil/
-const foodsKeywords = /noodle|pasta|flour|spice|biscuit|cracker|bar|protein powder/
-const freshnessKeywords = /apple|banana|cucumber|pepper|tomato|broccoli|carrot|lettuce|orange|grape|melon|berry|spinach|onion|potato|cabbage|mushroom|strawberry|kiwi|mulberry/
-const proteinKeywords = /beef|chicken|fish|steak|meat|prawn|shrimp|salmon|tuna|pork/
-const dairyKeywords = /egg|milk|cheese|butter|yogurt|cream|buttermilk|condensed/
-const snackKeywords = /chips|cookie|cracker|snack|bar|popcorn|candy|chocolate|wafer/
-const frozenKeywords = /frozen|ice cream|icecream|ice pop|popsicle|frozen yogurt/
+const beverageKeywords =
+  /\bcoffee\b|\btea\b|\bjuice\b|\bwater\b|\bsoda\b|\bdrinks?\b|\blatte\b|\bespresso\b|\bbrew\b|\bsoft drink(?:s)?\b|\bsparkling\b|\bbeverage(?:s)?\b/
+const bakeryKeywords = /\bbread\b|\bbun\b|\broll\b|\bcroissant\b|\bmuffin\b|\bbagel\b|\bscone\b|\bpastry\b|\bdanish\b|\bcake\b|\bloaf\b|\bbakery\b/
+const breakfastKeywords = /\boatmeal\b|\boats\b|\bcereal\b|\bgranola\b|\bpancake\b|\bwaffle\b|\bbreakfast\b/
+const cannedFishKeywords = /\bcanned tuna\b|\btuna\b|\bsardine\b|\bsardines\b|\bfish can\b|\bcanned fish\b/
+const cannedGoodsKeywords = /\bcanned\b|\bbeans\b|\bcorn\b|\bpeas\b|\btomato paste\b/
+const condimentsKeywords =
+  /\bsauce\b|\bketchup\b|\bmayo\b|\bmayonnaise\b|\bvinegar\b|\bspread\b|\bjam\b|\bhoney\b|\bseasoning\b|\bdip\b|\bmarinade\b|\boil\b/
+const foodsKeywords = /\bnoodle\b|\bpasta\b|\bflour\b|\bspice\b|\bbiscuit\b|\bcracker\b|\bbar\b|\bprotein powder\b/
+const freshnessKeywords =
+  /\bapple\b|\bbanana\b|\bcucumber\b|\bpepper\b|\btomato\b|\bbroccoli\b|\bcarrot\b|\blettuce\b|\borange\b|\bgrape\b|\bmelon\b|\bberry\b|\bspinach\b|\bonion\b|\bpotato\b|\bcabbage\b|\bmushroom\b|\bstrawberry\b|\bkiwi\b|\bmulberry\b|\blemon\b|\blime\b/
+const proteinKeywords = /\bbeef\b|\bchicken\b|\bfish\b|\bsteak\b|\bmeat\b|\bprawn\b|\bshrimp\b|\bsalmon\b|\btuna\b|\bpork\b/
+const dairyKeywords = /\begg\b|\bmilk\b|\bcheese\b|\bbutter\b|\byogurt\b|\bcream\b|\bbuttermilk\b|\bcondensed\b/
+const snackKeywords = /\bchips\b|\bcookie\b|\bcracker\b|\bsnack\b|\bbar\b|\bpopcorn\b|\bcandy\b|\bchocolate\b|\bwafer\b/
+const frozenKeywords = /\bfrozen\b|\bice cream\b|\bicecream\b|\bice pop\b|\bpopsicle\b|\bfrozen yogurt\b/
 const householdPaperKeywords = /tissue|wipe|wipes|napkin|paper towel|toilet paper|facial tissue/
 const laundryKeywords = /laundry|detergent|washing powder|fabric softener|bleach/
 const cleaningKeywords = /cleaner|dishwash|disinfect|sponge|scrub|soap/
 const personalCareKeywords = /shampoo|conditioner|toothpaste|toothbrush|lotion|body wash|deodorant|soap bar|face wash/
 const babyCareKeywords = /baby|diaper|nappy|infant|baby wipe|baby wipes/
 const petKeywords = /\b(cat food|dog food|pet food|pet care|pet supplies|cat treat|dog treat|pet)\b/
+const seasonalKeywords = /seasonal|holiday|festive|summer|winter|spring|autumn|back to school|back-to-school|thanksgiving|christmas|halloween|easter|new year/
+const promoKeywords = /promo|deal|discount|sale|save|offer|special/
+
+const perishableCategories = new Set(['fresh-produce', 'meat-seafood', 'dairy-eggs', 'bakery', 'frozen'])
 
 export function classifyProduct(product) {
   const text = `${product.title ?? ''} ${product.description ?? ''}`.toLowerCase()
@@ -108,9 +123,9 @@ export function classifyProduct(product) {
   if (cleaningKeywords.test(text)) return 'cleaning'
   if (personalCareKeywords.test(text)) return 'personal-care'
   if (riceKeywords.test(text)) return 'rice-grains'
+  if (freshnessKeywords.test(text)) return 'fresh-produce'
   if (beverageKeywords.test(text)) return 'coffee-drinks'
   if (bakeryKeywords.test(text)) return 'bakery'
-  if (freshnessKeywords.test(text)) return 'fresh-produce'
   if (breakfastKeywords.test(text)) return 'breakfast'
   if (cannedFishKeywords.test(text)) return 'canned-fish'
   if (cannedGoodsKeywords.test(text)) return 'canned-goods'
@@ -122,6 +137,19 @@ export function classifyProduct(product) {
   if (snackKeywords.test(text)) return 'snacks'
 
   return 'foods-staples'
+}
+
+export function classifyShelfGroups(product) {
+  const text = `${product.title ?? ''} ${product.description ?? ''}`.toLowerCase()
+  const category = product.category || 'foods-staples'
+  const groups = new Set()
+
+  if (seasonalKeywords.test(text) || product.seasonal) groups.add('seasonal')
+  if (promoKeywords.test(text) || product.promo) groups.add('promo')
+  if (perishableCategories.has(category)) groups.add('perishable')
+  else groups.add('non-perishable')
+
+  return [...groups]
 }
 
 export function resolveCategoryLabel(categoryId) {
@@ -146,6 +174,7 @@ export function normalizeApiProduct(product) {
     image,
     slug: slugify(product.title || `item-${product.id}`),
     categoryLabel: resolveCategoryLabel(category),
+    groups: classifyShelfGroups({ ...product, category }),
   }
 }
 
@@ -165,6 +194,7 @@ export function normalizeCustomProduct(product) {
     slug: slugify(product.title || 'custom-item'),
     note: product.note || 'Created locally in your inventory.',
     categoryLabel: resolveCategoryLabel(product.category || 'custom'),
+    groups: classifyShelfGroups({ ...product, category: product.category || 'custom' }),
   }
 }
 

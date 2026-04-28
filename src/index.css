@@ -942,6 +942,20 @@ img {
   gap: 8px;
 }
 
+.rail-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(47, 38, 31, 0.18), transparent);
+  margin: 4px 0 2px;
+}
+
+.rail-label {
+  margin: 0;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+
 .store-toolbar--rail {
   grid-template-columns: 1fr;
 }

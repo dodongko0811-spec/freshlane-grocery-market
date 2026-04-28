@@ -4,6 +4,7 @@ import {
   STORAGE_KEYS,
   buildCartTotals,
   createId,
+  classifyShelfGroups,
   loadFromStorage,
   normalizeCustomProduct,
   saveToStorage,
@@ -144,7 +145,14 @@ export function StoreProvider({ children }) {
   }, [state.cart])
 
   const allProducts = useMemo(
-    () => [...starterCatalog, ...state.apiProducts, ...state.customProducts],
+    () => [
+      ...starterCatalog.map((product) => ({
+        ...product,
+        groups: product.groups || classifyShelfGroups(product),
+      })),
+      ...state.apiProducts,
+      ...state.customProducts,
+    ],
     [state.apiProducts, state.customProducts],
   )
   const visibleProducts = useMemo(
