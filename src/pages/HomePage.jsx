@@ -85,7 +85,7 @@ export function HomePage() {
           <article className="promo-feature">
             <div className="promo-feature__header">
               <span>Featured this week</span>
-              <strong>Rice, coffee, canned goods, bakery, and pantry staples</strong>
+              <strong>Rice, drinks, canned fish, bakery, and pantry staples</strong>
             </div>
             <div className="promo-feature__stack">
               {featured.slice(0, 3).map((product) => (
@@ -120,7 +120,7 @@ export function HomePage() {
         <SectionTitle
           eyebrow="Departments"
           title="Shop by grocery department."
-          text="From rice and coffee to bakery, canned goods, and baby essentials, the aisle labels mirror a real supermarket shelf."
+          text="From rice and drinks to bakery, canned fish, paper goods, laundry, and baby essentials, the aisle labels mirror a real supermarket shelf."
         />
         <div className="department-grid">
           {departments.map((department, index) => (

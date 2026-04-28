@@ -7,19 +7,21 @@ export const STORAGE_KEYS = {
 export const STORE_CATEGORIES = [
   { id: 'all', label: 'All items' },
   { id: 'rice-grains', label: 'Rice & Grains' },
-  { id: 'coffee-drinks', label: 'Coffee & Drinks' },
+  { id: 'coffee-drinks', label: 'Drinks' },
   { id: 'beverages', label: 'Beverages' },
   { id: 'foods-staples', label: 'Foods & Staples' },
   { id: 'bakery', label: 'Bakery' },
   { id: 'breakfast', label: 'Breakfast' },
+  { id: 'canned-fish', label: 'Canned Fish' },
   { id: 'canned-goods', label: 'Canned Goods' },
-  { id: 'condiments', label: 'Condiments' },
+  { id: 'condiments', label: 'Sauces & Condiments' },
   { id: 'frozen', label: 'Frozen' },
   { id: 'fresh-produce', label: 'Fresh Produce' },
   { id: 'meat-seafood', label: 'Meat & Seafood' },
   { id: 'dairy-eggs', label: 'Dairy & Eggs' },
   { id: 'snacks', label: 'Snacks' },
-  { id: 'household-paper', label: 'Tissue & Wipes' },
+  { id: 'household-paper', label: 'Paper Goods' },
+  { id: 'laundry', label: 'Laundry' },
   { id: 'cleaning', label: 'Cleaning' },
   { id: 'personal-care', label: 'Personal Care' },
   { id: 'baby-care', label: 'Baby Essentials' },
@@ -80,16 +82,18 @@ const riceKeywords = /rice|grain|quinoa|barley/
 const beverageKeywords = /coffee|tea|juice|water|soda|drink|latte|espresso|brew|soft drink|sparkling|beverage/
 const bakeryKeywords = /bread|bun|roll|croissant|muffin|bagel|scone|pastry|danish|cake|loaf|bakery/
 const breakfastKeywords = /oatmeal|oats|cereal|granola|pancake|waffle|breakfast/
-const cannedKeywords = /canned|tuna|sardine|beans|corn|tomato sauce|tomato paste/
+const cannedFishKeywords = /canned tuna|tuna|sardine|sardines|fish can|canned fish/
+const cannedGoodsKeywords = /canned|beans|corn|peas|tomato paste/
 const condimentsKeywords = /sauce|ketchup|mayo|mayonnaise|vinegar|spread|jam|honey|seasoning|dip|marinade|oil/
-const foodsKeywords = /bread|noodle|pasta|flour|spice|biscuit|cracker|snack|bar|chocolate|wafer|protein powder/
+const foodsKeywords = /noodle|pasta|flour|spice|biscuit|cracker|bar|protein powder/
 const freshnessKeywords = /apple|banana|cucumber|pepper|tomato|broccoli|carrot|lettuce|orange|grape|melon|berry|spinach|onion|potato|cabbage|mushroom|strawberry|kiwi|mulberry/
 const proteinKeywords = /beef|chicken|fish|steak|meat|prawn|shrimp|salmon|tuna|pork/
 const dairyKeywords = /egg|milk|cheese|butter|yogurt|cream|buttermilk|condensed/
 const snackKeywords = /chips|cookie|cracker|snack|bar|popcorn|candy|chocolate|wafer/
 const frozenKeywords = /frozen|ice cream|icecream|ice pop|popsicle|frozen yogurt/
 const householdPaperKeywords = /tissue|wipe|wipes|napkin|paper towel|toilet paper|facial tissue/
-const cleaningKeywords = /soap|detergent|cleaner|dishwash|laundry|bleach|disinfect|sponge|scrub/
+const laundryKeywords = /laundry|detergent|washing powder|fabric softener|bleach/
+const cleaningKeywords = /cleaner|dishwash|disinfect|sponge|scrub|soap/
 const personalCareKeywords = /shampoo|conditioner|toothpaste|toothbrush|lotion|body wash|deodorant|soap bar|face wash/
 const babyCareKeywords = /baby|diaper|nappy|infant|baby wipe|baby wipes/
 const petKeywords = /\b(cat food|dog food|pet food|pet care|pet supplies|cat treat|dog treat|pet)\b/
@@ -100,6 +104,7 @@ export function classifyProduct(product) {
   if (petKeywords.test(text)) return 'pet-care'
   if (babyCareKeywords.test(text)) return 'baby-care'
   if (householdPaperKeywords.test(text)) return 'household-paper'
+  if (laundryKeywords.test(text)) return 'laundry'
   if (cleaningKeywords.test(text)) return 'cleaning'
   if (personalCareKeywords.test(text)) return 'personal-care'
   if (riceKeywords.test(text)) return 'rice-grains'
@@ -107,7 +112,8 @@ export function classifyProduct(product) {
   if (bakeryKeywords.test(text)) return 'bakery'
   if (freshnessKeywords.test(text)) return 'fresh-produce'
   if (breakfastKeywords.test(text)) return 'breakfast'
-  if (cannedKeywords.test(text)) return 'canned-goods'
+  if (cannedFishKeywords.test(text)) return 'canned-fish'
+  if (cannedGoodsKeywords.test(text)) return 'canned-goods'
   if (condimentsKeywords.test(text)) return 'condiments'
   if (frozenKeywords.test(text)) return 'frozen'
   if (foodsKeywords.test(text)) return 'foods-staples'
