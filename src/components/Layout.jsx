@@ -26,9 +26,9 @@ export function Layout() {
         <div className="utility-strip">
           <p>FreshLane Grocery Market</p>
           <div className="utility-links">
-            <span>Free pickup over $50</span>
-            <span>Store locator</span>
-            <span>Help center</span>
+            <span>Today&apos;s restock</span>
+            <span>Store desk</span>
+            <span>Order help</span>
           </div>
         </div>
 
@@ -86,8 +86,8 @@ export function Layout() {
           <h2>Everyday groceries, local inventory control, and cart flow in one place.</h2>
         </div>
         <p>
-          Built with React, React Router, and a free product API, then customized with local
-          product management.
+          Built with React, React Router, and a free product API, then shaped into a grocery
+          storefront with local product management.
         </p>
       </footer>
     </div>

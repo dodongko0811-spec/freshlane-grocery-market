@@ -8,30 +8,30 @@ import { useStore } from '../store/storeContext.js'
 const promoCopy = [
   {
     title: 'Weekly Fresh Picks',
-    text: 'A faster way to stock your kitchen with produce, dairy, and pantry staples.',
+    text: 'Use this page like a store flyer: a quick scan, a few good finds, then move on.',
   },
   {
     title: 'Bundle & Save',
-    text: 'Mix everyday essentials with custom stock items to keep every shelf moving.',
+    text: 'Mix everyday essentials with custom stock items and keep the shelf from feeling empty.',
   },
   {
     title: 'Market Deals',
-    text: 'Shop the most useful items first and keep the cart flowing with live updates.',
+    text: 'The cart updates live, so the page behaves more like a real shop counter than a demo.',
   },
 ]
 
 const serviceCards = [
   {
-    title: 'Fast Browse',
-    text: 'Search products instantly and filter by grocery department.',
+    title: 'Quick browse',
+    text: 'Search products instantly and filter by grocery aisle without extra clicking.',
   },
   {
-    title: 'Custom Shelf',
-    text: 'Add, edit, hide, and restore items in your own inventory list.',
+    title: 'Custom shelf',
+    text: 'Add, edit, hide, and restore items in a personal inventory list that stays in the browser.',
   },
   {
-    title: 'Local Checkout',
-    text: 'Save cart changes in the browser and demo a real checkout flow.',
+    title: 'Local checkout',
+    text: 'Adjust the cart, save changes locally, and finish with a simple checkout flow.',
   },
 ]
 
@@ -42,18 +42,27 @@ export function HomePage() {
     ...item,
     count: visibleProducts.filter((product) => product.category === item.id).length,
   }))
+  const departmentCardClasses = [
+    'department-card--0',
+    'department-card--1',
+    'department-card--2',
+    'department-card--3',
+    'department-card--4',
+    'department-card--5',
+    'department-card--6',
+  ]
 
   return (
     <div className="page-stack">
       <section className="home-hero panel">
         <div className="hero-copy">
-          <p className="eyebrow">Always fresh value</p>
+          <p className="eyebrow">Storefront notes</p>
           <h1>
-            Grocery shopping that feels busy, practical, and easy to stock.
+            Grocery shopping that feels like a real store run.
           </h1>
           <p className="lead">
-            FreshLane combines live grocery data, local product management, and a cart that
-            actually responds. Add items, remove them from the shelf, and keep the market moving.
+            FreshLane combines live grocery data, local product management, and a cart that reacts
+            immediately. Add items, remove them from the shelf, and keep the market moving.
           </p>
 
           <div className="hero-actions">
@@ -111,11 +120,15 @@ export function HomePage() {
         <SectionTitle
           eyebrow="Departments"
           title="Shop by grocery department."
-          text="A quick way to mirror a retail storefront with clear categories and easy scanning."
+          text="The cards stay uneven on purpose, like a person laid out the aisle notes instead of a grid system."
         />
         <div className="department-grid">
-          {departments.map((department) => (
-            <NavLink key={department.id} to={`/store?category=${department.id}`} className="department-card">
+          {departments.map((department, index) => (
+            <NavLink
+              key={department.id}
+              to={`/store?category=${department.id}`}
+              className={`department-card ${departmentCardClasses[index] ?? 'department-card--6'}`}
+            >
               <strong>{department.label}</strong>
               <span>{department.count} items</span>
             </NavLink>
@@ -129,7 +142,7 @@ export function HomePage() {
           title="Best sellers that keep the shelf feeling real."
           text="These cards use the live grocery feed and respond to the cart button immediately."
         />
-        <div className="product-grid">
+        <div className="product-grid product-grid--featured">
           {featured.map((product) => (
             <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
           ))}
@@ -165,12 +178,12 @@ export function HomePage() {
       <section className="panel section-block">
         <SectionTitle
           eyebrow="What&apos;s happening"
-          title="Promotions, savings, and service notes in a simple retail grid."
-          text="This section replaces the news-and-promotions feel from the reference with grocery-friendly updates."
+          title="Small notes from the floor."
+          text="Promotions, savings, and service notes sit in a slightly uneven grid so the page feels less assembled by a tool."
         />
-        <div className="news-grid">
+        <div className="news-grid news-grid--featured">
           {serviceCards.map((card, index) => (
-            <article key={card.title} className="news-card">
+            <article key={card.title} className={`news-card news-card--${index + 1}`}>
               <p className="news-kicker">Update {String(index + 1).padStart(2, '0')}</p>
               <h3>{card.title}</h3>
               <p>{card.text}</p>
