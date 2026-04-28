@@ -21,8 +21,8 @@ export function Layout() {
   }
 
   return (
-    <div className="shell">
-      <header className="site-header">
+    <div className="shell shell--split">
+      <aside className="site-sidebar">
         <div className="utility-strip">
           <p>FreshLane Grocery Market</p>
           <div className="utility-links">
@@ -32,7 +32,7 @@ export function Layout() {
           </div>
         </div>
 
-        <div className="masthead">
+        <div className="masthead masthead--sidebar">
           <NavLink to="/" className="brand" aria-label="FreshLane Grocery home">
             <LogoMark />
             <span>
@@ -62,7 +62,7 @@ export function Layout() {
           </div>
         </div>
 
-        <nav className="department-nav" aria-label="Primary">
+        <nav className="department-nav department-nav--sidebar" aria-label="Primary">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -74,22 +74,24 @@ export function Layout() {
             </NavLink>
           ))}
         </nav>
-      </header>
+      </aside>
 
-      <main className="main">
-        <Outlet />
-      </main>
+      <div className="site-content">
+        <main className="main">
+          <Outlet />
+        </main>
 
-      <footer className="footer">
-        <div>
-          <p className="footer-kicker">FreshLane Grocery Market</p>
-          <h2>Everyday groceries, local inventory control, and cart flow in one place.</h2>
-        </div>
-        <p>
-          Built with React, React Router, and a free product API, then shaped into a grocery
-          storefront with local product management.
-        </p>
-      </footer>
+        <footer className="footer">
+          <div>
+            <p className="footer-kicker">FreshLane Grocery Market</p>
+            <h2>Everyday groceries, local inventory control, and cart flow in one place.</h2>
+          </div>
+          <p>
+            Built with React, React Router, and a free product API, then shaped into a grocery
+            storefront with local product management.
+          </p>
+        </footer>
+      </div>
     </div>
   )
 }
