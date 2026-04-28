@@ -14,6 +14,7 @@ export function Layout() {
   const { cartCount, status } = useStore()
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   function handleSearchSubmit(event) {
     event.preventDefault()
@@ -21,8 +22,8 @@ export function Layout() {
   }
 
   return (
-    <div className="shell shell--split">
-      <aside className="site-sidebar">
+    <div className={`shell shell--split${sidebarOpen ? '' : ' shell--sidebar-collapsed'}`}>
+      <aside className="site-sidebar" id="freshlane-sidebar" aria-hidden={!sidebarOpen}>
         <div className="utility-strip">
           <p>FreshLane Grocery Market</p>
           <div className="utility-links">
@@ -77,6 +78,17 @@ export function Layout() {
       </aside>
 
       <div className="site-content">
+        <div className="content-toolbar">
+          <button
+            type="button"
+            className="sidebar-toggle button button-secondary"
+            onClick={() => setSidebarOpen((value) => !value)}
+            aria-expanded={sidebarOpen}
+            aria-controls="freshlane-sidebar"
+          >
+            {sidebarOpen ? 'Close navigation' : 'Open navigation'}
+          </button>
+        </div>
         <main className="main">
           <Outlet />
         </main>

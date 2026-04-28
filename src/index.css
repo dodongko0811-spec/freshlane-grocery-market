@@ -92,6 +92,10 @@ img {
   width: min(1440px, calc(100% - 32px));
 }
 
+.shell--sidebar-collapsed {
+  grid-template-columns: 0 minmax(0, 1fr);
+}
+
 .site-header {
   display: grid;
   gap: 10px;
@@ -106,6 +110,19 @@ img {
   max-height: calc(100vh - 24px);
   overflow: auto;
   padding-right: 4px;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    width 180ms ease;
+}
+
+.shell--sidebar-collapsed .site-sidebar {
+  width: 0;
+  opacity: 0;
+  transform: translateX(-12px);
+  pointer-events: none;
+  overflow: hidden;
+  padding-right: 0;
 }
 
 .site-sidebar::-webkit-scrollbar {
@@ -323,6 +340,17 @@ img {
 .site-content {
   display: grid;
   gap: 18px;
+}
+
+.content-toolbar {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.sidebar-toggle {
+  min-height: 38px;
+  padding-inline: 14px;
+  border-radius: 999px;
 }
 
 .main {
