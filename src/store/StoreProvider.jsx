@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useReducer } from 'react'
-import { fallbackCatalog, loadGroceryCatalog } from './api.js'
+import { fallbackCatalog, loadGroceryCatalog, starterCatalog } from './api.js'
 import {
   STORAGE_KEYS,
   buildCartTotals,
@@ -144,7 +144,7 @@ export function StoreProvider({ children }) {
   }, [state.cart])
 
   const allProducts = useMemo(
-    () => [...state.apiProducts, ...state.customProducts],
+    () => [...starterCatalog, ...state.apiProducts, ...state.customProducts],
     [state.apiProducts, state.customProducts],
   )
   const visibleProducts = useMemo(

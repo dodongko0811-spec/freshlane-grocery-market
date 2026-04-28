@@ -43,7 +43,7 @@ export function StorePage() {
         <SectionTitle
           eyebrow="Live store"
           title="Browse the grocery floor."
-          text="The page works more like a catalog wall now: filters on the left, products on the right."
+          text="The page works more like a catalog wall now: filters on the left, products on the right, and more everyday staples up front."
         />
 
         {status === 'loading' ? <p className="loading-line">Loading grocery products...</p> : null}
@@ -101,7 +101,7 @@ export function StorePage() {
 
             <article className="rail-card rail-card--accent">
               <p>Weekly Deal</p>
-              <strong>Bring home the pantry basics with less guesswork.</strong>
+              <strong>Rice, coffee, tissue, and wipes sit up front.</strong>
               <span>Use the sidebar filters to narrow the live feed.</span>
             </article>
             <article className="rail-card">
@@ -112,7 +112,7 @@ export function StorePage() {
             <article className="rail-card">
               <p>Quick note</p>
               <strong>{error ? 'Offline fallback active' : 'Live data connected'}</strong>
-              <span>{error || 'Product data loads from DummyJSON groceries.'}</span>
+              <span>{error || 'Product data loads from DummyJSON groceries and starter staples.'}</span>
             </article>
           </aside>
 

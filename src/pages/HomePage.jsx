@@ -85,7 +85,7 @@ export function HomePage() {
           <article className="promo-feature">
             <div className="promo-feature__header">
               <span>Featured this week</span>
-              <strong>Fresh produce and kitchen essentials</strong>
+              <strong>Rice, coffee, tissue, wipes, and pantry staples</strong>
             </div>
             <div className="promo-feature__stack">
               {featured.slice(0, 3).map((product) => (
@@ -117,10 +117,10 @@ export function HomePage() {
       </section>
 
       <section className="panel section-block">
-        <SectionTitle
+          <SectionTitle
           eyebrow="Departments"
           title="Shop by grocery department."
-          text="The cards stay uneven on purpose, like a person laid out the aisle notes instead of a grid system."
+          text="From rice and coffee to wipes and tissue, the aisle labels mirror a real supermarket shelf."
         />
         <div className="department-grid">
           {departments.map((department, index) => (
@@ -140,7 +140,7 @@ export function HomePage() {
         <SectionTitle
           eyebrow="Featured shelf"
           title="Best sellers that keep the shelf feeling real."
-          text="These cards use the live grocery feed and respond to the cart button immediately."
+          text="Staples like rice, coffee, and household goods sit beside the live grocery feed."
         />
         <div className="product-grid product-grid--featured">
           {featured.map((product) => (

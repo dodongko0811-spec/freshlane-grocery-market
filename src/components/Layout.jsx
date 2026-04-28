@@ -44,7 +44,7 @@ export function Layout() {
           <form className="searchbar" onSubmit={handleSearchSubmit}>
             <input
               type="search"
-              placeholder="Search products, aisles, or deals"
+              placeholder="Search rice, coffee, tissue, wipes..."
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               aria-label="Search groceries"
@@ -88,7 +88,7 @@ export function Layout() {
           </div>
           <p>
             Built with React, React Router, and a free product API, then shaped into a grocery
-            storefront with local product management.
+            storefront with real supermarket staples and local product management.
           </p>
         </footer>
       </div>

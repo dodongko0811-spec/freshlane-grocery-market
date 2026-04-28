@@ -1,7 +1,211 @@
-import { normalizeApiProduct } from './storeUtils.js'
+import { normalizeApiProduct, resolveCategoryLabel } from './storeUtils.js'
 
 const GROCERIES_URL =
   'https://dummyjson.com/products/category/groceries?limit=0&select=id,title,description,price,category,brand,rating,stock,thumbnail,images'
+
+function svgData(svg) {
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`
+}
+
+function makePackImage({ title, subtitle, bg, panel, accent, ribbon }) {
+  return svgData(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="720" height="540" viewBox="0 0 720 540">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="${bg[0]}" />
+          <stop offset="100%" stop-color="${bg[1]}" />
+        </linearGradient>
+        <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="${panel[0]}" />
+          <stop offset="100%" stop-color="${panel[1]}" />
+        </linearGradient>
+      </defs>
+      <rect width="720" height="540" rx="36" fill="url(#bg)" />
+      <circle cx="120" cy="112" r="24" fill="${accent}" opacity="0.18" />
+      <circle cx="602" cy="98" r="34" fill="${accent}" opacity="0.12" />
+      <circle cx="608" cy="434" r="28" fill="${accent}" opacity="0.14" />
+      <rect x="132" y="98" width="456" height="316" rx="34" fill="url(#panel)" />
+      <rect x="178" y="142" width="364" height="164" rx="26" fill="${accent}" opacity="0.15" />
+      <rect x="208" y="168" width="304" height="112" rx="22" fill="${accent}" opacity="0.24" />
+      <rect x="226" y="182" width="268" height="86" rx="18" fill="#fff9f2" opacity="0.8" />
+      <text x="360" y="222" text-anchor="middle" fill="#2f261f" font-family="Georgia, serif" font-size="58" font-weight="700">${title}</text>
+      <text x="360" y="258" text-anchor="middle" fill="#7d6d60" font-family="Inter, sans-serif" font-size="22" letter-spacing="3">${subtitle}</text>
+      <rect x="176" y="322" width="368" height="42" rx="21" fill="${ribbon}" opacity="0.9" />
+      <text x="360" y="349" text-anchor="middle" fill="#fffaf2" font-family="Inter, sans-serif" font-size="18" font-weight="700" letter-spacing="2">${title.toUpperCase()}</text>
+    </svg>
+  `)
+}
+
+export const starterCatalog = [
+  {
+    id: 'starter-rice',
+    source: 'starter',
+    sourceId: 'starter-rice',
+    title: 'Premium Rice 5kg',
+    description: 'Family-size rice for daily meals, packed for easy pantry storage.',
+    category: 'rice-grains',
+    brand: 'FreshLane Essentials',
+    price: 14.99,
+    rating: 4.8,
+    stock: 60,
+    categoryLabel: resolveCategoryLabel('rice-grains'),
+    image: makePackImage({
+      title: 'RICE',
+      subtitle: '5KG',
+      bg: ['#f6efe4', '#efe0c5'],
+      panel: ['#fffaf2', '#f1e6d2'],
+      accent: '#c79c56',
+      ribbon: '#6c8f39',
+    }),
+  },
+  {
+    id: 'starter-coffee',
+    source: 'starter',
+    sourceId: 'starter-coffee',
+    title: 'House Coffee Blend',
+    description: 'Smooth coffee blend for mornings, desk breaks, and late-night refills.',
+    category: 'coffee-drinks',
+    brand: 'FreshLane Essentials',
+    price: 8.99,
+    rating: 4.9,
+    stock: 44,
+    categoryLabel: resolveCategoryLabel('coffee-drinks'),
+    image: makePackImage({
+      title: 'COFFEE',
+      subtitle: 'GROUND',
+      bg: ['#f5e6d4', '#e7c9a2'],
+      panel: ['#fffaf4', '#f1ddd0'],
+      accent: '#7b4f2a',
+      ribbon: '#c62d12',
+    }),
+  },
+  {
+    id: 'starter-tissue',
+    source: 'starter',
+    sourceId: 'starter-tissue',
+    title: 'Tissue Box',
+    description: 'Soft facial tissues for counters, bathrooms, and bedside tables.',
+    category: 'household-paper',
+    brand: 'FreshLane Home',
+    price: 2.49,
+    rating: 4.6,
+    stock: 80,
+    categoryLabel: resolveCategoryLabel('household-paper'),
+    image: makePackImage({
+      title: 'TISSUE',
+      subtitle: 'BOX',
+      bg: ['#f3efe7', '#e7e0d5'],
+      panel: ['#fffdf8', '#efe8df'],
+      accent: '#8f8478',
+      ribbon: '#7d6d60',
+    }),
+  },
+  {
+    id: 'starter-wipes',
+    source: 'starter',
+    sourceId: 'starter-wipes',
+    title: 'Wet Wipes',
+    description: 'Handy wipes for quick cleanups, travel bags, and lunch boxes.',
+    category: 'household-paper',
+    brand: 'FreshLane Home',
+    price: 3.49,
+    rating: 4.5,
+    stock: 52,
+    categoryLabel: resolveCategoryLabel('household-paper'),
+    image: makePackImage({
+      title: 'WIPES',
+      subtitle: '40 PCS',
+      bg: ['#edf6f6', '#d8e9ea'],
+      panel: ['#f8fefe', '#e2f0ef'],
+      accent: '#5c8a8d',
+      ribbon: '#55702c',
+    }),
+  },
+  {
+    id: 'starter-dish-soap',
+    source: 'starter',
+    sourceId: 'starter-dish-soap',
+    title: 'Dish Soap',
+    description: 'Everyday dishwashing liquid for the sink and the quick evening cleanup.',
+    category: 'cleaning',
+    brand: 'FreshLane Home',
+    price: 4.29,
+    rating: 4.7,
+    stock: 34,
+    categoryLabel: resolveCategoryLabel('cleaning'),
+    image: makePackImage({
+      title: 'SOAP',
+      subtitle: 'DISH',
+      bg: ['#f7f3e8', '#e5e1d2'],
+      panel: ['#fffdf9', '#efe9dc'],
+      accent: '#3d7fa3',
+      ribbon: '#f04a23',
+    }),
+  },
+  {
+    id: 'starter-laundry-detergent',
+    source: 'starter',
+    sourceId: 'starter-laundry-detergent',
+    title: 'Laundry Detergent',
+    description: 'Laundry detergent for everyday clothes, towels, and linens.',
+    category: 'cleaning',
+    brand: 'FreshLane Home',
+    price: 11.99,
+    rating: 4.8,
+    stock: 27,
+    categoryLabel: resolveCategoryLabel('cleaning'),
+    image: makePackImage({
+      title: 'DETERGENT',
+      subtitle: 'LAUNDRY',
+      bg: ['#eef2fb', '#dfe7f6'],
+      panel: ['#fefeff', '#e8edf9'],
+      accent: '#5b73b8',
+      ribbon: '#55702c',
+    }),
+  },
+  {
+    id: 'starter-noodles',
+    source: 'starter',
+    sourceId: 'starter-noodles',
+    title: 'Instant Noodles',
+    description: 'Quick noodles for late dinners, pantry backups, and budget meals.',
+    category: 'foods-staples',
+    brand: 'FreshLane Everyday',
+    price: 1.19,
+    rating: 4.4,
+    stock: 96,
+    categoryLabel: resolveCategoryLabel('foods-staples'),
+    image: makePackImage({
+      title: 'NOODLES',
+      subtitle: 'INSTANT',
+      bg: ['#f7ebdb', '#efd4a6'],
+      panel: ['#fff9f2', '#f7e4c8'],
+      accent: '#d56b2b',
+      ribbon: '#7b4f2a',
+    }),
+  },
+  {
+    id: 'starter-cereal',
+    source: 'starter',
+    sourceId: 'starter-cereal',
+    title: 'Breakfast Cereal',
+    description: 'A simple breakfast staple for quick mornings and school prep.',
+    category: 'foods-staples',
+    brand: 'FreshLane Everyday',
+    price: 5.99,
+    rating: 4.5,
+    stock: 45,
+    categoryLabel: resolveCategoryLabel('foods-staples'),
+    image: makePackImage({
+      title: 'CEREAL',
+      subtitle: 'BREAKFAST',
+      bg: ['#f3efe6', '#e2d6c0'],
+      panel: ['#fffaf3', '#f1e7d6'],
+      accent: '#b68a49',
+      ribbon: '#c62d12',
+    }),
+  },
+]
 
 export async function loadGroceryCatalog() {
   const response = await fetch(GROCERIES_URL)
