@@ -8,7 +8,12 @@ export const STORE_CATEGORIES = [
   { id: 'all', label: 'All items' },
   { id: 'rice-grains', label: 'Rice & Grains' },
   { id: 'coffee-drinks', label: 'Coffee & Drinks' },
+  { id: 'beverages', label: 'Beverages' },
   { id: 'foods-staples', label: 'Foods & Staples' },
+  { id: 'breakfast', label: 'Breakfast' },
+  { id: 'canned-goods', label: 'Canned Goods' },
+  { id: 'condiments', label: 'Condiments' },
+  { id: 'frozen', label: 'Frozen' },
   { id: 'fresh-produce', label: 'Fresh Produce' },
   { id: 'meat-seafood', label: 'Meat & Seafood' },
   { id: 'dairy-eggs', label: 'Dairy & Eggs' },
@@ -16,6 +21,7 @@ export const STORE_CATEGORIES = [
   { id: 'household-paper', label: 'Tissue & Wipes' },
   { id: 'cleaning', label: 'Cleaning' },
   { id: 'personal-care', label: 'Personal Care' },
+  { id: 'baby-care', label: 'Baby Care' },
   { id: 'pet-care', label: 'Pet Care' },
   { id: 'custom', label: 'Custom Items' },
 ]
@@ -69,27 +75,37 @@ export function createId(prefix) {
   return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`
 }
 
-const riceKeywords = /rice|grain|quinoa|barley|oatmeal|oats/
-const beverageKeywords = /coffee|tea|juice|water|soda|drink|latte|espresso|brew/
-const foodsKeywords = /bread|noodle|pasta|cereal|flour|sauce|spice|seasoning|jam|honey|biscuit|cracker|canned|tuna|sardine/
+const riceKeywords = /rice|grain|quinoa|barley/
+const beverageKeywords = /coffee|tea|juice|water|soda|drink|latte|espresso|brew|soft drink|sparkling|beverage/
+const breakfastKeywords = /oatmeal|oats|cereal|granola|pancake|waffle|breakfast/
+const cannedKeywords = /canned|tin|tuna|sardine|beans|corn|tomato sauce|tomato paste/
+const condimentsKeywords = /sauce|ketchup|mayo|mayonnaise|vinegar|spread|jam|honey|seasoning|dip|marinade|oil/
+const foodsKeywords = /bread|noodle|pasta|flour|spice|biscuit|cracker|snack|bar|chocolate|wafer|protein powder/
 const freshnessKeywords = /apple|banana|cucumber|pepper|tomato|broccoli|carrot|lettuce|orange|grape|melon|berry|spinach|onion|potato|cabbage|mushroom|strawberry|kiwi|mulberry/
 const proteinKeywords = /beef|chicken|fish|steak|meat|prawn|shrimp|salmon|tuna|pork/
 const dairyKeywords = /egg|milk|cheese|butter|yogurt|cream|buttermilk|condensed/
 const snackKeywords = /chips|cookie|cracker|snack|bar|popcorn|candy|chocolate|wafer/
-const householdPaperKeywords = /tissue|wipe|napkin|paper towel|toilet paper|facial tissue/
+const frozenKeywords = /frozen|ice cream|icecream|ice pop|popsicle|frozen yogurt/
+const householdPaperKeywords = /tissue|wipe|wipes|napkin|paper towel|toilet paper|facial tissue/
 const cleaningKeywords = /soap|detergent|cleaner|dishwash|laundry|bleach|disinfect|sponge|scrub/
-const personalCareKeywords = /shampoo|conditioner|toothpaste|toothbrush|lotion|body wash|deodorant/
+const personalCareKeywords = /shampoo|conditioner|toothpaste|toothbrush|lotion|body wash|deodorant|soap bar|face wash/
+const babyCareKeywords = /baby|diaper|nappy|infant|baby wipe|baby wipes/
 const petKeywords = /cat|dog|pet/
 
 export function classifyProduct(product) {
   const text = `${product.title ?? ''} ${product.description ?? ''}`.toLowerCase()
 
   if (petKeywords.test(text)) return 'pet-care'
+  if (babyCareKeywords.test(text)) return 'baby-care'
   if (householdPaperKeywords.test(text)) return 'household-paper'
   if (cleaningKeywords.test(text)) return 'cleaning'
   if (personalCareKeywords.test(text)) return 'personal-care'
   if (riceKeywords.test(text)) return 'rice-grains'
   if (beverageKeywords.test(text)) return 'coffee-drinks'
+  if (breakfastKeywords.test(text)) return 'breakfast'
+  if (cannedKeywords.test(text)) return 'canned-goods'
+  if (condimentsKeywords.test(text)) return 'condiments'
+  if (frozenKeywords.test(text)) return 'frozen'
   if (foodsKeywords.test(text)) return 'foods-staples'
   if (proteinKeywords.test(text)) return 'meat-seafood'
   if (freshnessKeywords.test(text)) return 'fresh-produce'

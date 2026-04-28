@@ -105,19 +105,19 @@ export function HomePage() {
             </div>
           </article>
 
-        <div className="promo-mini-grid">
-          {promoCopy.map((item) => (
-            <article key={item.title} className="mini-promo">
-              <p>{item.title}</p>
-              <span>{item.text}</span>
-            </article>
-          ))}
-        </div>
+          <div className="promo-mini-grid">
+            {promoCopy.map((item) => (
+              <article key={item.title} className="mini-promo">
+                <p>{item.title}</p>
+                <span>{item.text}</span>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="panel section-block">
-          <SectionTitle
+        <SectionTitle
           eyebrow="Departments"
           title="Shop by grocery department."
           text="From rice and coffee to wipes and tissue, the aisle labels mirror a real supermarket shelf."
