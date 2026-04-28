@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { MetricCard } from '../components/MetricCard.jsx'
 import { ProductCard } from '../components/ProductCard.jsx'
 import { SectionTitle } from '../components/SectionTitle.jsx'
-import { STORE_CATEGORIES } from '../store/storeUtils.js'
+import { STORE_CATEGORIES, formatCurrency } from '../store/storeUtils.js'
 import { useStore } from '../store/storeContext.js'
 
 const promoCopy = [
@@ -39,11 +39,12 @@ export function HomePage() {
   const { visibleProducts, addToCart } = useStore()
   const sortedVisible = [...visibleProducts].toSorted((a, b) => b.rating - a.rating || a.price - b.price)
   const featured = sortedVisible.slice(0, 6)
-  const newThisWeek = sortedVisible
-    .filter((product) => (product.groups || []).includes('seasonal'))
-    .slice(0, 4)
+  const bestSellers = sortedVisible.slice(0, 6)
   const freshShelf = sortedVisible
-    .filter((product) => (product.groups || []).includes('perishable'))
+    .filter((product) => (product.groups || []).includes('perishable') && product.category !== 'frozen')
+    .slice(0, 6)
+  const frozenShelf = sortedVisible
+    .filter((product) => product.category === 'frozen')
     .slice(0, 6)
   const pantryShelf = sortedVisible
     .filter((product) => (product.groups || []).includes('non-perishable'))
@@ -51,6 +52,7 @@ export function HomePage() {
   const promoShelf = sortedVisible
     .filter((product) => (product.groups || []).includes('promo'))
     .slice(0, 3)
+  const flashDeal = promoShelf[0] || featured[0]
   const departments = STORE_CATEGORIES.filter((item) => item.id !== 'all').map((item) => ({
     ...item,
     count: visibleProducts.filter((product) => product.category === item.id).length,
@@ -129,6 +131,31 @@ export function HomePage() {
         </div>
       </section>
 
+      <section className="panel flash-strip">
+        <div className="flash-strip__copy">
+          <p className="eyebrow">Only today</p>
+          <h2>Flash deals move before the shelves reset.</h2>
+          <p>
+            Grab a marked-down staple, then head straight to the fresh and pantry aisles while the
+            promotion is still visible.
+          </p>
+        </div>
+        {flashDeal ? (
+          <div className="flash-strip__deal">
+            <span className="flash-chip">Flash deal</span>
+            <strong>{flashDeal.title}</strong>
+            <span>{flashDeal.categoryLabel || 'Featured shelf'}</span>
+            <div className="flash-strip__price">
+              <b>{formatCurrency(flashDeal.price)}</b>
+              <span>{(flashDeal.groups || []).includes('promo') ? 'On Sale' : 'Featured'}</span>
+            </div>
+            <button type="button" className="button button-primary" onClick={() => addToCart(flashDeal.id)}>
+              Add to cart
+            </button>
+          </div>
+        ) : null}
+      </section>
+
       <section className="panel section-block">
         <SectionTitle
           eyebrow="Departments"
@@ -151,13 +178,15 @@ export function HomePage() {
 
       <section className="panel section-block">
         <SectionTitle
-          eyebrow="New this week"
-          title="Seasonal picks and fresh arrivals."
-          text="Small runs of holiday snacks, summer drinks, and week-of arrivals keep the store feeling current."
+          eyebrow="Best sellers"
+          title="The most picked items stay near the front."
+          text="Rice, drinks, bakery, canned fish, and pantry staples get the shelf label treatment so the page reads like a supermarket circular."
+          tone="best"
         />
+        <div className="shelf-label shelf-label--best">Best sellers shelf</div>
         <div className="product-grid product-grid--featured">
-          {(newThisWeek.length > 0 ? newThisWeek : featured).map((product) => (
-            <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
+          {(bestSellers.length > 0 ? bestSellers : featured).map((product) => (
+            <ProductCard key={product.id} product={product} onAddToCart={addToCart} tone="best" />
           ))}
         </div>
       </section>
@@ -167,10 +196,27 @@ export function HomePage() {
           eyebrow="Fresh market"
           title="Produce, dairy, bakery, and frozen shelves."
           text="This section stays on the perishable side of the store: quick-rotate items that belong in the front half of a market run."
+          tone="fresh"
         />
+        <div className="shelf-label shelf-label--fresh">Fresh shelf</div>
         <div className="product-grid product-grid--featured">
           {freshShelf.map((product) => (
-            <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
+            <ProductCard key={product.id} product={product} onAddToCart={addToCart} tone="fresh" />
+          ))}
+        </div>
+      </section>
+
+      <section className="panel section-block">
+        <SectionTitle
+          eyebrow="Frozen favorites"
+          title="Keep the freezer shelf in the mix."
+          text="Frozen staples sit in their own lane so the grocery floor feels closer to the real thing."
+          tone="frozen"
+        />
+        <div className="shelf-label shelf-label--frozen">Frozen shelf</div>
+        <div className="product-grid product-grid--featured">
+          {(frozenShelf.length > 0 ? frozenShelf : freshShelf).map((product) => (
+            <ProductCard key={product.id} product={product} onAddToCart={addToCart} tone="frozen" />
           ))}
         </div>
       </section>
@@ -180,10 +226,12 @@ export function HomePage() {
           eyebrow="Pantry staples"
           title="Cans, sauces, rice, drinks, and shelf-stable essentials."
           text="The pantry side keeps the store grounded with the things people come back for every week."
+          tone="pantry"
         />
+        <div className="shelf-label shelf-label--pantry">Pantry shelf</div>
         <div className="product-grid product-grid--featured">
           {pantryShelf.map((product) => (
-            <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
+            <ProductCard key={product.id} product={product} onAddToCart={addToCart} tone="pantry" />
           ))}
         </div>
       </section>

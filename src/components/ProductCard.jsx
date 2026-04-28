@@ -11,14 +11,24 @@ export function ProductCard({
   hidden = false,
   showActions = true,
   actionLabel = 'Add to cart',
+  tone,
 }) {
   const groups = product.groups || []
+  const inferredTone = tone || (
+    groups.includes('seasonal') || groups.includes('promo')
+      ? 'best'
+      : ['fresh-produce', 'dairy-eggs', 'bakery'].includes(product.category)
+        ? 'fresh'
+        : product.category === 'frozen'
+          ? 'frozen'
+          : 'pantry'
+  )
   const badges = []
   if (groups.includes('promo')) badges.push({ label: 'On Sale', className: 'badge--sale' })
   if (groups.includes('seasonal')) badges.push({ label: 'New This Week', className: 'badge--new' })
 
   return (
-    <article className={`product-card${hidden ? ' is-hidden' : ''}`}>
+    <article className={`product-card product-card--tone-${inferredTone}${hidden ? ' is-hidden' : ''}`}>
       <div className="product-media">
         {badges.length > 0 ? (
           <div className="product-badges">
