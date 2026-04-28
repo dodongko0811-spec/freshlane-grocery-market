@@ -43,62 +43,66 @@ export function StorePage() {
         <SectionTitle
           eyebrow="Live store"
           title="Browse the grocery floor."
-          text="Search the live product feed, narrow it by category, and drop items straight into the cart."
+          text="The page works more like a catalog wall now: filters on the left, products on the right."
         />
-
-        <div className="store-toolbar">
-          <label className="field field-search">
-            <span>Search products</span>
-            <input
-              type="search"
-              placeholder="Apple, oil, eggs, snack..."
-              value={query}
-              onChange={(event) => {
-                const nextQuery = event.target.value
-                const next = new URLSearchParams(searchParams)
-                if (nextQuery.trim()) next.set('q', nextQuery)
-                else next.delete('q')
-                setSearchParams(next)
-              }}
-            />
-          </label>
-
-          <label className="field">
-            <span>Sort by</span>
-            <select value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
-              {SORT_OPTIONS.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-
-        <div className="chip-row">
-          {STORE_CATEGORIES.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={`chip${category === item.id ? ' is-active' : ''}`}
-              onClick={() => updateCategory(item.id)}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
 
         {status === 'loading' ? <p className="loading-line">Loading grocery products...</p> : null}
         {error ? <p className="notice">{error}</p> : null}
-        <p className="store-count">
-          Showing <strong>{filteredProducts.length}</strong> products from the active shelf.
-        </p>
         <div className="store-layout">
           <aside className="store-rail">
+            <article className="rail-card rail-card--filters">
+              <p>Catalog filters</p>
+              <div className="store-toolbar store-toolbar--rail">
+                <label className="field field-search">
+                  <span>Search products</span>
+                  <input
+                    type="search"
+                    placeholder="Apple, oil, eggs, snack..."
+                    value={query}
+                    onChange={(event) => {
+                      const nextQuery = event.target.value
+                      const next = new URLSearchParams(searchParams)
+                      if (nextQuery.trim()) next.set('q', nextQuery)
+                      else next.delete('q')
+                      setSearchParams(next)
+                    }}
+                  />
+                </label>
+
+                <label className="field">
+                  <span>Sort by</span>
+                  <select value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
+                    {SORT_OPTIONS.map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+
+              <div className="chip-grid">
+                {STORE_CATEGORIES.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={`chip${category === item.id ? ' is-active' : ''}`}
+                    onClick={() => updateCategory(item.id)}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+
+              <p className="store-count store-count--rail">
+                <strong>{filteredProducts.length}</strong> products visible now
+              </p>
+            </article>
+
             <article className="rail-card rail-card--accent">
               <p>Weekly Deal</p>
               <strong>Bring home the pantry basics with less guesswork.</strong>
-              <span>Use the filters and header search to narrow the live feed.</span>
+              <span>Use the sidebar filters to narrow the live feed.</span>
             </article>
             <article className="rail-card">
               <p>Store status</p>
@@ -113,6 +117,9 @@ export function StorePage() {
           </aside>
 
           <div>
+            <p className="store-count store-count--top">
+              Showing <strong>{filteredProducts.length}</strong> products from the active shelf.
+            </p>
             <div className="product-grid product-grid--store">
               {filteredProducts.map((product) => (
                 <ProductCard

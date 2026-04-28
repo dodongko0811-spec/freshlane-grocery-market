@@ -26,9 +26,9 @@ export function Layout() {
         <div className="utility-strip">
           <p>FreshLane Grocery Market</p>
           <div className="utility-links">
-            <span>Today&apos;s restock</span>
+            <span>Fresh stock</span>
             <span>Store desk</span>
-            <span>Order help</span>
+            <span>Help counter</span>
           </div>
         </div>
 
@@ -44,7 +44,7 @@ export function Layout() {
           <form className="searchbar" onSubmit={handleSearchSubmit}>
             <input
               type="search"
-              placeholder="Search groceries, deals, or brands"
+              placeholder="Search products, aisles, or deals"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               aria-label="Search groceries"
