@@ -86,6 +86,47 @@ export function createId(prefix) {
   return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`
 }
 
+function escapeXml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;')
+}
+
+export function buildFallbackProductImage(title = 'FreshLane', categoryLabel = 'Selection') {
+  const safeTitle = escapeXml(title)
+  const safeLabel = escapeXml(categoryLabel)
+
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="720" height="540" viewBox="0 0 720 540">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#fff9f1" />
+          <stop offset="100%" stop-color="#f2e1ca" />
+        </linearGradient>
+        <linearGradient id="card" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#ffffff" />
+          <stop offset="100%" stop-color="#f2e7d4" />
+        </linearGradient>
+      </defs>
+      <rect width="720" height="540" rx="36" fill="url(#bg)" />
+      <circle cx="128" cy="118" r="30" fill="#f04a23" opacity="0.14" />
+      <circle cx="608" cy="98" r="42" fill="#6c8f39" opacity="0.12" />
+      <circle cx="606" cy="438" r="32" fill="#f5c64f" opacity="0.15" />
+      <rect x="132" y="92" width="456" height="330" rx="34" fill="url(#card)" stroke="#e2c9a4" stroke-width="2" />
+      <rect x="176" y="124" width="368" height="220" rx="28" fill="#fff7ef" />
+      <rect x="192" y="140" width="336" height="64" rx="18" fill="#e8d4ba" />
+      <rect x="192" y="220" width="336" height="88" rx="20" fill="#f6efe4" />
+      <text x="360" y="182" text-anchor="middle" fill="#2f261f" font-family="Georgia, serif" font-size="54" font-weight="700">${safeTitle}</text>
+      <text x="360" y="266" text-anchor="middle" fill="#7d6d60" font-family="Inter, sans-serif" font-size="22" letter-spacing="3">${safeLabel}</text>
+      <rect x="180" y="358" width="360" height="26" rx="13" fill="#f04a23" opacity="0.9" />
+      <text x="360" y="376" text-anchor="middle" fill="#fffaf2" font-family="Inter, sans-serif" font-size="16" font-weight="700" letter-spacing="2">FRESHLANE MARKET</text>
+    </svg>
+  `)}`
+}
+
 const riceKeywords = /rice|grain|quinoa|barley/
 const beverageKeywords =
   /\bcoffee\b|\btea\b|\bjuice\b|\bwater\b|\bsoda\b|\bdrinks?\b|\blatte\b|\bespresso\b|\bbrew\b|\bsoft drink(?:s)?\b|\bsparkling\b|\bbeverage(?:s)?\b/
@@ -190,7 +231,7 @@ export function normalizeCustomProduct(product) {
     price: Number(product.price) || 0,
     rating: Number(product.rating) || 4.5,
     stock: Number(product.stock) || 25,
-    image: product.image || '',
+    image: product.image || buildFallbackProductImage(product.title, resolveCategoryLabel(product.category || 'custom')),
     slug: slugify(product.title || 'custom-item'),
     note: product.note || 'Created locally in your inventory.',
     categoryLabel: resolveCategoryLabel(product.category || 'custom'),
